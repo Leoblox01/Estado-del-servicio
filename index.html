@@ -56,7 +56,6 @@
         }
     </script>
     <style>
-        /* Estilos personalizados de interfaz de juego */
         body {
             font-family: 'Inter', sans-serif;
             background-color: #111214;
@@ -70,7 +69,6 @@
             font-family: 'Fredoka', sans-serif;
         }
 
-        /* Efecto 3D Bloque de Roblox */
         .roblox-block {
             border: 2px solid #393B3D;
             box-shadow: 0 6px 0 0 #141517;
@@ -92,7 +90,6 @@
             box-shadow: 0 1px 0 0 rgba(0, 0, 0, 0.5);
         }
 
-        /* Scrollbar personalizado tipo Roblox */
         ::-webkit-scrollbar {
             width: 8px;
         }
@@ -113,7 +110,6 @@
     <!-- BARRA SUPERIOR ROBLOX (NAVBAR) -->
     <header class="bg-roblox-topbar border-b-2 border-roblox-border sticky top-0 z-50">
         <div class="max-w-7xl mx-auto px-4 h-14 flex items-center justify-between">
-            <!-- Izquierda: Logo y Título del Juego -->
             <div class="flex items-center space-x-3">
                 <div class="w-8 h-8 bg-white rounded-md flex items-center justify-center font-black text-black text-xl shadow-md rotate-[-6deg] hover:rotate-0 transition-transform cursor-pointer">
                     <span class="transform -rotate-12 select-none">R</span>
@@ -126,7 +122,6 @@
                 </div>
             </div>
 
-            <!-- Centro: Accesos directos/Estado Servidor -->
             <div class="hidden md:flex items-center space-x-4 text-xs font-bold text-slate-300">
                 <div class="bg-slate-900/80 px-3 py-1.5 rounded-lg border border-roblox-border flex items-center gap-2">
                     <span class="w-2.5 h-2.5 bg-emerald-500 rounded-full animate-pulse"></span>
@@ -138,7 +133,6 @@
                 </div>
             </div>
 
-            <!-- Derecha: Perfil Ficticio / Estado Público -->
             <div class="flex items-center space-x-3">
                 <div class="bg-emerald-950/80 px-3 py-1 rounded-full border border-emerald-600/50 flex items-center space-x-2">
                     <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
@@ -170,7 +164,6 @@
     <!-- CONTENIDO PRINCIPAL -->
     <main class="max-w-7xl mx-auto px-4 py-6 flex-1 w-full">
 
-        <!-- HEADER SECCIÓN Y TIMESTAMP -->
         <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6">
             <div>
                 <h1 class="text-2xl sm:text-3xl font-extrabold roblox-font tracking-wide text-white flex items-center gap-3">
@@ -181,7 +174,6 @@
                 </p>
             </div>
 
-            <!-- Badge de Hora de Actualización -->
             <div class="bg-roblox-card px-4 py-2 rounded-xl border border-roblox-border flex items-center gap-3 shadow-md shrink-0">
                 <i class="fa-regular fa-clock text-roblox-accent text-lg"></i>
                 <div class="text-xs">
@@ -194,7 +186,6 @@
         <!-- CONTROLES: FILTROS Y BUSCADOR -->
         <div class="bg-roblox-card p-4 rounded-xl border border-roblox-border mb-8 shadow-lg flex flex-col lg:flex-row gap-4 justify-between items-center">
             
-            <!-- Buscador -->
             <div class="relative w-full lg:w-80">
                 <i class="fa-solid fa-magnifying-glass absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 text-sm"></i>
                 <input 
@@ -206,7 +197,6 @@
                 >
             </div>
 
-            <!-- Botones de Filtro por Criterio -->
             <div class="flex flex-wrap gap-2 w-full lg:w-auto justify-start lg:justify-end">
                 <button 
                     onclick="setFilter('all')" 
@@ -237,7 +227,7 @@
 
         <!-- REJILLA DE TARJETAS DE LÍNEAS -->
         <div id="lines-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
-            <!-- Se generará dinámicamente con JavaScript -->
+            <!-- Dinámico por JS -->
         </div>
 
         <!-- MENSAJE SI NO HAY RESULTADOS -->
@@ -249,7 +239,7 @@
 
     </main>
 
-    <!-- PIE DE PÁGINA ESTILO ROBLOX -->
+    <!-- PIE DE PÁGINA -->
     <footer class="bg-roblox-topbar border-t-2 border-roblox-border py-6 mt-12 text-slate-400 text-xs">
         <div class="max-w-7xl mx-auto px-4 flex flex-col md:flex-row justify-between items-center gap-4">
             <div class="flex items-center space-x-3">
@@ -264,9 +254,8 @@
         </div>
     </footer>
 
-    <!-- LÓGICA INTERACTIVA EN JAVASCRIPT -->
+    <!-- JAVASCRIPT -->
     <script>
-        // DATOS OBLIGATORIOS DE LAS LÍNEAS
         const linesData = [
             {
                 id: '1',
@@ -392,7 +381,6 @@
 
         let currentFilter = 'all';
 
-        // CONFIGURACIÓN DE BADGES SEGÚN EL ESTADO
         function getStatusBadge(status, statusText) {
             if (status === 'operativa') {
                 return `
@@ -418,7 +406,6 @@
             }
         }
 
-        // RENDERIZADO DE LAS TARJETAS DE LÍNEAS
         function renderLines(data) {
             const grid = document.getElementById('lines-grid');
             const noResults = document.getElementById('no-results');
@@ -436,17 +423,12 @@
                 const card = document.createElement('div');
                 card.className = 'roblox-block bg-roblox-card rounded-xl p-5 flex flex-col justify-between relative overflow-hidden group';
 
-                // Tira de color representativo de la línea arriba
-                const topBarColor = line.color;
-
                 card.innerHTML = `
-                    <div class="absolute top-0 left-0 right-0 h-2" style="background-color: ${topBarColor}"></div>
+                    <div class="absolute top-0 left-0 right-0 h-2" style="background-color: ${line.color}"></div>
                     
                     <div>
-                        <!-- Encabezado de la Tarjeta -->
                         <div class="flex items-start justify-between gap-3 mb-4 mt-1">
                             <div class="flex items-center gap-3">
-                                <!-- Ícono con número/letra de la línea -->
                                 <div class="w-12 h-12 rounded-xl flex items-center justify-center font-black text-xl roblox-font shadow-inner shrink-0" 
                                      style="background-color: ${line.color}; color: ${line.textColor === 'text-black' ? '#000000' : '#FFFFFF'}">
                                     ${line.id}
@@ -460,12 +442,10 @@
                             </div>
                         </div>
 
-                        <!-- Badge de Estado -->
                         <div class="mb-4">
                             ${getStatusBadge(line.status, line.statusText)}
                         </div>
 
-                        <!-- Detalles del Tramo / Estatus -->
                         <div class="bg-slate-900/90 rounded-lg p-3 border border-roblox-border/60 mb-4">
                             <div class="text-[11px] font-bold text-slate-400 uppercase tracking-wider mb-1 flex items-center gap-1">
                                 <i class="fa-solid fa-circle-info text-slate-500"></i> Tramo / Información:
@@ -476,7 +456,6 @@
                         </div>
                     </div>
 
-                    <!-- Footer de la tarjeta estilo Game UI -->
                     <div class="pt-3 border-t border-roblox-border/50 flex items-center justify-between text-xs text-slate-400">
                         <span class="flex items-center gap-1.5">
                             <i class="fa-solid fa-gamepad text-slate-500"></i>
@@ -492,11 +471,9 @@
             });
         }
 
-        // ACCIÓN DE FILTRADO
         function setFilter(filterType) {
             currentFilter = filterType;
 
-            // Actualizar apariencia de botones
             document.querySelectorAll('.filter-btn').forEach(btn => {
                 btn.className = 'filter-btn roblox-button px-3.5 py-2 rounded-lg text-xs font-bold bg-slate-800 text-slate-300 border border-roblox-border hover:bg-slate-700';
             });
@@ -509,7 +486,6 @@
             filterLines();
         }
 
-        // FILTRADO COMBINADO DE BÚSQUEDA Y BOTONES
         function filterLines() {
             const query = document.getElementById('search-input').value.toLowerCase().trim();
 
@@ -527,7 +503,6 @@
             renderLines(filtered);
         }
 
-        // TIMESTAMP EN VIVO
         function updateTimestamp() {
             const now = new Date();
             const timeString = now.toLocaleTimeString('es-MX', { 
@@ -538,15 +513,13 @@
             });
             document.getElementById('live-timestamp').textContent = timeString;
 
-            // Simular cambio ligero de jugadores activos al actualizar
             const randomPlayers = 1400 + Math.floor(Math.random() * 50);
             document.getElementById('player-count').textContent = `Jugadores: ${randomPlayers.toLocaleString()}`;
         }
 
-        // DETALLE MODAL SIMULADO (Sin usar alert)
         function showLineInfo(lineName, statusText, detail) {
             const modal = document.createElement('div');
-            modal.className = 'fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center p-4 animate-fade-in';
+            modal.className = 'fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center p-4';
             modal.innerHTML = `
                 <div class="roblox-block bg-roblox-card border-2 border-roblox-border rounded-2xl p-6 max-w-md w-full shadow-2xl relative">
                     <div class="flex justify-between items-center mb-4">
@@ -574,11 +547,9 @@
             document.body.appendChild(modal);
         }
 
-        // INICIALIZACIÓN
         window.onload = function() {
             renderLines(linesData);
             updateTimestamp();
-            // Actualizar reloj cada segundo
             setInterval(updateTimestamp, 1000);
         };
     </script>
