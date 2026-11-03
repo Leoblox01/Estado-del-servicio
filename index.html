@@ -1,0 +1,586 @@
+<!DOCTYPE html>
+<html lang="es" class="h-full bg-slate-950">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Roblox Metro Service Status</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts: Fredoka & Inter para estética Game UI -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600;700&family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        game: ['Fredoka', 'sans-serif'],
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                    colors: {
+                        roblox: {
+                            topbar: '#191B1D',
+                            card: '#232527',
+                            border: '#393B3D',
+                            hover: '#2E3033',
+                            accent: '#00A2FF',
+                            green: '#00E676',
+                            yellow: '#FFC107',
+                            red: '#FF5252',
+                        },
+                        metro: {
+                            l1: '#E6007E',   // Rosa
+                            l2: '#0070B8',   // Azul
+                            l3: '#AF9800',   // Verde Olivo / Caqui
+                            l4: '#6CACE4',   // Cyan / Azul Claro
+                            l5: '#FFD100',   // Amarillo
+                            l6: '#E4002B',   // Rojo
+                            l7: '#E87722',   // Naranja
+                            l8: '#009A44',   // Verde
+                            l9: '#8B5A2B',   // Café
+                            lA: '#9B59B6',   // Morado
+                            lB: '#9E9E9E',   // Gris
+                            l12: '#C99218',  // Oro / Mostaza
+                        }
+                    },
+                    boxShadow: {
+                        'roblox-btn': '0px 4px 0px 0px rgba(0,0,0,0.4)',
+                        'roblox-btn-active': '0px 0px 0px 0px rgba(0,0,0,0.4)',
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        /* Estilos personalizados de interfaz de juego */
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #111214;
+            background-image: 
+                radial-gradient(circle at 25px 25px, rgba(255, 255, 255, 0.03) 2px, transparent 0),
+                radial-gradient(circle at 75px 75px, rgba(255, 255, 255, 0.03) 2px, transparent 0);
+            background-size: 100px 100px;
+        }
+
+        .roblox-font {
+            font-family: 'Fredoka', sans-serif;
+        }
+
+        /* Efecto 3D Bloque de Roblox */
+        .roblox-block {
+            border: 2px solid #393B3D;
+            box-shadow: 0 6px 0 0 #141517;
+            transition: all 0.15s ease-in-out;
+        }
+
+        .roblox-block:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 0 0 #141517;
+        }
+
+        .roblox-button {
+            box-shadow: 0 4px 0 0 rgba(0, 0, 0, 0.5);
+            transition: all 0.1s ease;
+        }
+
+        .roblox-button:active {
+            transform: translateY(3px);
+            box-shadow: 0 1px 0 0 rgba(0, 0, 0, 0.5);
+        }
+
+        /* Scrollbar personalizado tipo Roblox */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #191B1D;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #393B3D;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #00A2FF;
+        }
+    </style>
+</head>
+<body class="text-slate-100 flex flex-col min-h-screen">
+
+    <!-- BARRA SUPERIOR ROBLOX (NAVBAR) -->
+    <header class="bg-roblox-topbar border-b-2 border-roblox-border sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 h-14 flex items-center justify-between">
+            <!-- Izquierda: Logo y Título del Juego -->
+            <div class="flex items-center space-x-3">
+                <div class="w-8 h-8 bg-white rounded-md flex items-center justify-center font-black text-black text-xl shadow-md rotate-[-6deg] hover:rotate-0 transition-transform cursor-pointer">
+                    <span class="transform -rotate-12 select-none">R</span>
+                </div>
+                <div class="flex flex-col">
+                    <span class="roblox-font text-lg font-bold tracking-wide leading-tight text-white flex items-center gap-2">
+                        ROBLOX METRO <span class="bg-roblox-accent text-xs font-sans font-bold px-2 py-0.5 rounded-full text-white uppercase tracking-wider">LIVE</span>
+                    </span>
+                    <span class="text-xs text-slate-400 font-semibold hidden sm:block">Centro de Control de Tránsito</span>
+                </div>
+            </div>
+
+            <!-- Centro: Accesos directos/Estado Servidor -->
+            <div class="hidden md:flex items-center space-x-4 text-xs font-bold text-slate-300">
+                <div class="bg-slate-900/80 px-3 py-1.5 rounded-lg border border-roblox-border flex items-center gap-2">
+                    <span class="w-2.5 h-2.5 bg-emerald-500 rounded-full animate-pulse"></span>
+                    <span>Servidor: <span class="text-white">CDMX-Server #01</span></span>
+                </div>
+                <div class="bg-slate-900/80 px-3 py-1.5 rounded-lg border border-roblox-border flex items-center gap-2">
+                    <i class="fa-solid fa-users text-roblox-accent"></i>
+                    <span id="player-count">Jugadores: 1,420</span>
+                </div>
+            </div>
+
+            <!-- Derecha: Perfil Ficticio / Estado Público -->
+            <div class="flex items-center space-x-3">
+                <div class="bg-emerald-950/80 px-3 py-1 rounded-full border border-emerald-600/50 flex items-center space-x-2">
+                    <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+                    <span class="text-xs font-bold text-emerald-300 uppercase tracking-wider">Acceso Público</span>
+                </div>
+                <div class="w-9 h-9 bg-slate-800 rounded-full border-2 border-roblox-accent flex items-center justify-center overflow-hidden cursor-pointer hover:border-white transition-colors">
+                    <i class="fa-solid fa-user-ninja text-lg text-slate-300"></i>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- BANNER DE ALERTA DEL SERVIDOR -->
+    <div class="bg-gradient-to-r from-red-950 via-slate-900 to-red-950 border-b border-red-800/40 py-2.5 px-4">
+        <div class="max-w-7xl mx-auto flex items-center justify-between text-xs sm:text-sm">
+            <div class="flex items-center gap-3">
+                <span class="bg-red-600 text-white font-bold roblox-font px-2 py-0.5 rounded uppercase tracking-wider text-xs animate-bounce">Aviso</span>
+                <p class="text-slate-200 font-medium truncate">
+                    <span class="font-bold text-red-400">Atención maquinistas:</span> Mantenimiento masivo en red de vías. Verifica el tramo antes de abordar tu tren.
+                </p>
+            </div>
+            <button onclick="updateTimestamp()" class="roblox-button bg-roblox-card hover:bg-roblox-hover text-slate-200 px-3 py-1 rounded text-xs font-bold border border-roblox-border flex items-center gap-1.5 shrink-0 ml-2">
+                <i class="fa-solid fa-rotate-right text-roblox-accent"></i>
+                <span class="hidden sm:inline">Actualizar</span>
+            </button>
+        </div>
+    </div>
+
+    <!-- CONTENIDO PRINCIPAL -->
+    <main class="max-w-7xl mx-auto px-4 py-6 flex-1 w-full">
+
+        <!-- HEADER SECCIÓN Y TIMESTAMP -->
+        <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6">
+            <div>
+                <h1 class="text-2xl sm:text-3xl font-extrabold roblox-font tracking-wide text-white flex items-center gap-3">
+                    <i class="fa-solid fa-train-subway text-roblox-accent"></i> ESTADO DE LÍNEAS
+                </h1>
+                <p class="text-sm text-slate-400 mt-1">
+                    Monitoreo en tiempo real del mapa de transporte en Roblox Metro CDMX
+                </p>
+            </div>
+
+            <!-- Badge de Hora de Actualización -->
+            <div class="bg-roblox-card px-4 py-2 rounded-xl border border-roblox-border flex items-center gap-3 shadow-md shrink-0">
+                <i class="fa-regular fa-clock text-roblox-accent text-lg"></i>
+                <div class="text-xs">
+                    <div class="text-slate-400 font-semibold">Última sincronización:</div>
+                    <div id="live-timestamp" class="text-white font-mono font-bold text-sm">--:--:-- --</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- CONTROLES: FILTROS Y BUSCADOR -->
+        <div class="bg-roblox-card p-4 rounded-xl border border-roblox-border mb-8 shadow-lg flex flex-col lg:flex-row gap-4 justify-between items-center">
+            
+            <!-- Buscador -->
+            <div class="relative w-full lg:w-80">
+                <i class="fa-solid fa-magnifying-glass absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 text-sm"></i>
+                <input 
+                    type="text" 
+                    id="search-input" 
+                    placeholder="Buscar línea o estación (ej: 7, Xola, La Paz)..." 
+                    class="w-full bg-slate-900 text-slate-100 placeholder-slate-500 text-sm rounded-lg pl-10 pr-4 py-2.5 border border-roblox-border focus:outline-none focus:border-roblox-accent transition-colors"
+                    onkeyup="filterLines()"
+                >
+            </div>
+
+            <!-- Botones de Filtro por Criterio -->
+            <div class="flex flex-wrap gap-2 w-full lg:w-auto justify-start lg:justify-end">
+                <button 
+                    onclick="setFilter('all')" 
+                    id="filter-all" 
+                    class="filter-btn roblox-button px-3.5 py-2 rounded-lg text-xs font-bold bg-roblox-accent text-white border border-blue-400">
+                    Todas (<span id="count-all">12</span>)
+                </button>
+                <button 
+                    onclick="setFilter('operativa')" 
+                    id="filter-operativa" 
+                    class="filter-btn roblox-button px-3.5 py-2 rounded-lg text-xs font-bold bg-slate-800 text-slate-300 border border-roblox-border hover:bg-slate-700">
+                    <i class="fa-solid fa-circle-check text-emerald-400 mr-1"></i> Completo (<span id="count-operativa">2</span>)
+                </button>
+                <button 
+                    onclick="setFilter('parcial')" 
+                    id="filter-parcial" 
+                    class="filter-btn roblox-button px-3.5 py-2 rounded-lg text-xs font-bold bg-slate-800 text-slate-300 border border-roblox-border hover:bg-slate-700">
+                    <i class="fa-solid fa-triangle-exclamation text-amber-400 mr-1"></i> Provisional (<span id="count-parcial">2</span>)
+                </button>
+                <button 
+                    onclick="setFilter('cerrada')" 
+                    id="filter-cerrada" 
+                    class="filter-btn roblox-button px-3.5 py-2 rounded-lg text-xs font-bold bg-slate-800 text-slate-300 border border-roblox-border hover:bg-slate-700">
+                    <i class="fa-solid fa-circle-xmark text-red-400 mr-1"></i> No Disponible (<span id="count-cerrada">8</span>)
+                </button>
+            </div>
+        </div>
+
+        <!-- REJILLA DE TARJETAS DE LÍNEAS -->
+        <div id="lines-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+            <!-- Se generará dinámicamente con JavaScript -->
+        </div>
+
+        <!-- MENSAJE SI NO HAY RESULTADOS -->
+        <div id="no-results" class="hidden text-center py-16 bg-roblox-card rounded-xl border border-roblox-border mt-4">
+            <i class="fa-solid fa-ghost text-5xl text-slate-600 mb-3"></i>
+            <h3 class="roblox-font text-xl text-slate-300">No se encontraron líneas</h3>
+            <p class="text-sm text-slate-500 mt-1">Prueba ajustando tu búsqueda o limpiando los filtros seleccionados.</p>
+        </div>
+
+    </main>
+
+    <!-- PIE DE PÁGINA ESTILO ROBLOX -->
+    <footer class="bg-roblox-topbar border-t-2 border-roblox-border py-6 mt-12 text-slate-400 text-xs">
+        <div class="max-w-7xl mx-auto px-4 flex flex-col md:flex-row justify-between items-center gap-4">
+            <div class="flex items-center space-x-3">
+                <div class="w-6 h-6 bg-slate-700 rounded flex items-center justify-center font-bold text-white text-xs">R</div>
+                <span>© 2026 Roblox Metro Transport Group - No afiliado oficialmente a STC Metro CDMX.</span>
+            </div>
+            <div class="flex space-x-6 text-slate-400">
+                <a href="#" class="hover:text-roblox-accent transition-colors"><i class="fa-brands fa-discord text-base"></i> Discord Server</a>
+                <a href="#" class="hover:text-roblox-accent transition-colors"><i class="fa-brands fa-roblox text-base"></i> Grupo de Roblox</a>
+                <a href="#" class="hover:text-roblox-accent transition-colors"><i class="fa-solid fa-shield-halved text-base"></i> Normativa</a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- LÓGICA INTERACTIVA EN JAVASCRIPT -->
+    <script>
+        // DATOS OBLIGATORIOS DE LAS LÍNEAS
+        const linesData = [
+            {
+                id: '1',
+                name: 'Línea 1',
+                color: '#E6007E',
+                textColor: 'text-white',
+                status: 'cerrada',
+                statusText: 'NO DISPONIBLE',
+                detail: 'Servicio suspendido temporalmente por trabajos de modernización general en el sistema.',
+                type: 'Desconectado'
+            },
+            {
+                id: '2',
+                name: 'Línea 2',
+                color: '#0070B8',
+                textColor: 'text-white',
+                status: 'parcial',
+                statusText: 'Tramo Provisional',
+                detail: 'Xola - Cuatro Caminos',
+                type: 'Servicio Parcial'
+            },
+            {
+                id: '3',
+                name: 'Línea 3',
+                color: '#AF9800',
+                textColor: 'text-white',
+                status: 'cerrada',
+                statusText: 'Cerrada por Renovación',
+                detail: 'Trabajos de mantenimiento mayor en vías y catenarias en toda la ruta.',
+                type: 'Renovación'
+            },
+            {
+                id: '4',
+                name: 'Línea 4',
+                color: '#6CACE4',
+                textColor: 'text-black',
+                status: 'cerrada',
+                statusText: 'NO DISPONIBLE',
+                detail: 'Servicio fuera de línea hasta nuevo aviso.',
+                type: 'Desconectado'
+            },
+            {
+                id: '5',
+                name: 'Línea 5',
+                color: '#FFD100',
+                textColor: 'text-black',
+                status: 'cerrada',
+                statusText: 'NO DISPONIBLE',
+                detail: 'Sin operaciones de trenes en esta línea.',
+                type: 'Desconectado'
+            },
+            {
+                id: '6',
+                name: 'Línea 6',
+                color: '#E4002B',
+                textColor: 'text-white',
+                status: 'cerrada',
+                statusText: 'NO DISPONIBLE',
+                detail: 'Servicio suspendido.',
+                type: 'Desconectado'
+            },
+            {
+                id: '7',
+                name: 'Línea 7',
+                color: '#E87722',
+                textColor: 'text-white',
+                status: 'parcial',
+                statusText: 'Tramo Provisional',
+                detail: 'Barranca del Muerto - Aquiles Serdán',
+                type: 'Servicio Parcial'
+            },
+            {
+                id: '8',
+                name: 'Línea 8',
+                color: '#009A44',
+                textColor: 'text-white',
+                status: 'cerrada',
+                statusText: 'NO DISPONIBLE',
+                detail: 'Línea deshabilitada temporalmente en el servidor.',
+                type: 'Desconectado'
+            },
+            {
+                id: '9',
+                name: 'Línea 9',
+                color: '#8B5A2B',
+                textColor: 'text-white',
+                status: 'cerrada',
+                statusText: 'NO DISPONIBLE',
+                detail: 'Operaciones detenidas por remodelación de estación terminal.',
+                type: 'Desconectado'
+            },
+            {
+                id: 'A',
+                name: 'Línea A',
+                color: '#9B59B6',
+                textColor: 'text-white',
+                status: 'operativa',
+                statusText: 'Servicio Completo',
+                detail: 'Servicio completo sin modificaciones Pantitlán - La Paz',
+                type: 'Operativo 100%'
+            },
+            {
+                id: 'B',
+                name: 'Línea B',
+                color: '#757575',
+                textColor: 'text-white',
+                status: 'cerrada',
+                statusText: 'NO DISPONIBLE',
+                detail: 'Fuera de servicio por ajustes técnico-operativos.',
+                type: 'Desconectado'
+            },
+            {
+                id: '12',
+                name: 'Línea 12',
+                color: '#C99218',
+                textColor: 'text-white',
+                status: 'operativa',
+                statusText: 'Servicio Completo',
+                detail: 'Servicio sin modificaciones Tláhuac - Mixcoac',
+                type: 'Operativo 100%'
+            }
+        ];
+
+        let currentFilter = 'all';
+
+        // CONFIGURACIÓN DE BADGES SEGÚN EL ESTADO
+        function getStatusBadge(status, statusText) {
+            if (status === 'operativa') {
+                return `
+                    <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-md text-xs font-bold bg-emerald-950 text-emerald-400 border border-emerald-600/40">
+                        <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+                        ${statusText}
+                    </span>
+                `;
+            } else if (status === 'parcial') {
+                return `
+                    <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-md text-xs font-bold bg-amber-950 text-amber-400 border border-amber-600/40">
+                        <i class="fa-solid fa-triangle-exclamation text-xs"></i>
+                        ${statusText}
+                    </span>
+                `;
+            } else {
+                return `
+                    <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-md text-xs font-bold bg-red-950 text-red-400 border border-red-600/40">
+                        <i class="fa-solid fa-ban text-xs"></i>
+                        ${statusText}
+                    </span>
+                `;
+            }
+        }
+
+        // RENDERIZADO DE LAS TARJETAS DE LÍNEAS
+        function renderLines(data) {
+            const grid = document.getElementById('lines-grid');
+            const noResults = document.getElementById('no-results');
+
+            grid.innerHTML = '';
+
+            if (data.length === 0) {
+                noResults.classList.remove('hidden');
+                return;
+            } else {
+                noResults.classList.add('hidden');
+            }
+
+            data.forEach(line => {
+                const card = document.createElement('div');
+                card.className = 'roblox-block bg-roblox-card rounded-xl p-5 flex flex-col justify-between relative overflow-hidden group';
+
+                // Tira de color representativo de la línea arriba
+                const topBarColor = line.color;
+
+                card.innerHTML = `
+                    <div class="absolute top-0 left-0 right-0 h-2" style="background-color: ${topBarColor}"></div>
+                    
+                    <div>
+                        <!-- Encabezado de la Tarjeta -->
+                        <div class="flex items-start justify-between gap-3 mb-4 mt-1">
+                            <div class="flex items-center gap-3">
+                                <!-- Ícono con número/letra de la línea -->
+                                <div class="w-12 h-12 rounded-xl flex items-center justify-center font-black text-xl roblox-font shadow-inner shrink-0" 
+                                     style="background-color: ${line.color}; color: ${line.textColor === 'text-black' ? '#000000' : '#FFFFFF'}">
+                                    ${line.id}
+                                </div>
+                                <div>
+                                    <h3 class="roblox-font text-lg font-bold text-white group-hover:text-roblox-accent transition-colors">
+                                        ${line.name}
+                                    </h3>
+                                    <span class="text-xs text-slate-400 font-medium">Línea del Sistema</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Badge de Estado -->
+                        <div class="mb-4">
+                            ${getStatusBadge(line.status, line.statusText)}
+                        </div>
+
+                        <!-- Detalles del Tramo / Estatus -->
+                        <div class="bg-slate-900/90 rounded-lg p-3 border border-roblox-border/60 mb-4">
+                            <div class="text-[11px] font-bold text-slate-400 uppercase tracking-wider mb-1 flex items-center gap-1">
+                                <i class="fa-solid fa-circle-info text-slate-500"></i> Tramo / Información:
+                            </div>
+                            <p class="text-xs sm:text-sm text-slate-200 font-semibold leading-relaxed">
+                                ${line.detail}
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- Footer de la tarjeta estilo Game UI -->
+                    <div class="pt-3 border-t border-roblox-border/50 flex items-center justify-between text-xs text-slate-400">
+                        <span class="flex items-center gap-1.5">
+                            <i class="fa-solid fa-gamepad text-slate-500"></i>
+                            <span class="font-semibold text-slate-300">${line.type}</span>
+                        </span>
+                        <button onclick="showLineInfo('${line.name}', '${line.statusText}', '${line.detail}')" class="text-roblox-accent hover:underline font-bold text-xs flex items-center gap-1">
+                            Ver mapa <i class="fa-solid fa-chevron-right text-[10px]"></i>
+                        </button>
+                    </div>
+                `;
+
+                grid.appendChild(card);
+            });
+        }
+
+        // ACCIÓN DE FILTRADO
+        function setFilter(filterType) {
+            currentFilter = filterType;
+
+            // Actualizar apariencia de botones
+            document.querySelectorAll('.filter-btn').forEach(btn => {
+                btn.className = 'filter-btn roblox-button px-3.5 py-2 rounded-lg text-xs font-bold bg-slate-800 text-slate-300 border border-roblox-border hover:bg-slate-700';
+            });
+
+            const activeBtn = document.getElementById(`filter-${filterType}`);
+            if (activeBtn) {
+                activeBtn.className = 'filter-btn roblox-button px-3.5 py-2 rounded-lg text-xs font-bold bg-roblox-accent text-white border border-blue-400';
+            }
+
+            filterLines();
+        }
+
+        // FILTRADO COMBINADO DE BÚSQUEDA Y BOTONES
+        function filterLines() {
+            const query = document.getElementById('search-input').value.toLowerCase().trim();
+
+            const filtered = linesData.filter(line => {
+                const matchesFilter = (currentFilter === 'all') || (line.status === currentFilter);
+                
+                const matchesSearch = line.name.toLowerCase().includes(query) ||
+                                      line.id.toLowerCase().includes(query) ||
+                                      line.detail.toLowerCase().includes(query) ||
+                                      line.statusText.toLowerCase().includes(query);
+
+                return matchesFilter && matchesSearch;
+            });
+
+            renderLines(filtered);
+        }
+
+        // TIMESTAMP EN VIVO
+        function updateTimestamp() {
+            const now = new Date();
+            const timeString = now.toLocaleTimeString('es-MX', { 
+                hour: '2-digit', 
+                minute: '2-digit', 
+                second: '2-digit',
+                hour12: true 
+            });
+            document.getElementById('live-timestamp').textContent = timeString;
+
+            // Simular cambio ligero de jugadores activos al actualizar
+            const randomPlayers = 1400 + Math.floor(Math.random() * 50);
+            document.getElementById('player-count').textContent = `Jugadores: ${randomPlayers.toLocaleString()}`;
+        }
+
+        // DETALLE MODAL SIMULADO (Sin usar alert)
+        function showLineInfo(lineName, statusText, detail) {
+            const modal = document.createElement('div');
+            modal.className = 'fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center p-4 animate-fade-in';
+            modal.innerHTML = `
+                <div class="roblox-block bg-roblox-card border-2 border-roblox-border rounded-2xl p-6 max-w-md w-full shadow-2xl relative">
+                    <div class="flex justify-between items-center mb-4">
+                        <h3 class="roblox-font text-xl text-white font-bold flex items-center gap-2">
+                            <i class="fa-solid fa-map-location-dot text-roblox-accent"></i> ${lineName}
+                        </h3>
+                        <button onclick="this.closest('.fixed').remove()" class="text-slate-400 hover:text-white text-lg font-bold w-8 h-8 rounded-lg hover:bg-slate-800 flex items-center justify-center">
+                            ✕
+                        </button>
+                    </div>
+                    <div class="space-y-3 text-sm text-slate-300">
+                        <p><strong class="text-white">Estado Actual:</strong> ${statusText}</p>
+                        <p><strong class="text-white">Detalle de ruta:</strong> ${detail}</p>
+                        <div class="p-3 bg-slate-900 rounded-lg border border-roblox-border text-xs text-slate-400">
+                            💡 <i>Tip de Roblox:</i> Conéctate a la central de despacho en el juego para solicitar asignación de tren en tramos provisionales.
+                        </div>
+                    </div>
+                    <div class="mt-6 text-right">
+                        <button onclick="this.closest('.fixed').remove()" class="roblox-button bg-roblox-accent hover:bg-blue-600 text-white font-bold px-4 py-2 rounded-lg text-xs">
+                            Entendido
+                        </button>
+                    </div>
+                </div>
+            `;
+            document.body.appendChild(modal);
+        }
+
+        // INICIALIZACIÓN
+        window.onload = function() {
+            renderLines(linesData);
+            updateTimestamp();
+            // Actualizar reloj cada segundo
+            setInterval(updateTimestamp, 1000);
+        };
+    </script>
+</body>
+</html>
